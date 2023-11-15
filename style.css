@@ -11,6 +11,30 @@ button[kind="header"] {
     color:rgb(180, 167, 141)
 }
 
+/* Para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor da parte "agarrável" da barra de rolagem */
+}
+
+/* Para navegadores baseados em Firefox */
+/* Nota: A propriedade 'scrollbar-width' ainda não é suportada em todos os navegadores Firefox */
+/* A partir da versão 64+ do Firefox, esta propriedade deve funcionar. */
+html {
+  scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+  width: 12px; /* Largura da barra de rolagem */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor da parte "agarrável" da barra de rolagem */
+}
+
 @media(hover){
     /* header element to be removed */
     header[data-testid="stHeader"] {
