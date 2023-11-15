@@ -99,7 +99,7 @@ with st.sidebar:
 if tabs == "Mortar Compressive strenght":
     
     st.markdown(
-        "Hello, I am Concreta, the first Brazilian AI built to determine the mortar strength (fck) based on dosage data. I am one of the creations of the GPEE (Research and Studies Group in Civil Engineering) of UFCAT, and I am here to help you, Civil Engineer and engineering student who wants to determine the properties of concrete.")
+        "Hello, I am Concreta, the Brazilian AI built to determine the mortar compressive strength (fck) based on dosage data. I am one of the creations of the GPEE (Research and Studies Group in Civil Engineering) of UFCAT, and I am here to help you, Civil Engineer and engineering student who wants to determine the mechanicel properties of concrete.")
     st.header("Inputs")
     st.markdown(
         "Please, fill in the table with the mixture parameters. For your consideration, here is an example:"
