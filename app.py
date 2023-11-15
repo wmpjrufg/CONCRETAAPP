@@ -91,8 +91,10 @@ st.markdown("<style>" + open("./style.css").read() + "</style>", unsafe_allow_ht
 
 with st.sidebar:
     tabs = on_hover_tabs(
-        tabName=["Mortar Compressive strenght", "Desirability", "About"],
-        iconName=["dashboard", "money", "economy"],
+        #tabName=["Mortar Compressive strenght", "Desirability", "About"],
+        tabName=["Mortar Compressive strenght", "About"],
+        #iconName=["dashboard", "money", "economy"],
+        iconName=["dashboard", "economy"],
         default_choice=0,
     )
 
@@ -256,8 +258,8 @@ if tabs == "Mortar Compressive strenght":
                     "Disclaimer: prediction information is not a recommendation to waive laboratory dosage tests. However, AI helps technicians in the area to get an estimate of the mechanical strength of the concrete mixture."
                      )
 
-elif tabs == "Desirability":
-    st.subheader("This feature is under construction with our team, stay tuned for new deliveries!")
+#elif tabs == "Desirability":
+#    st.subheader("This feature is under construction with our team, stay tuned for new deliveries!")
 
 elif tabs == "About":
     st.header("Research team")
