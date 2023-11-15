@@ -9,8 +9,11 @@ from st_on_hover_tabs import on_hover_tabs
 import pickle
 
 
-SCALE = 'scale.sav'
-MODEL = 'melhor_modelo.pkl'
+SCALE_MORTAR = 'scale_mortar.sav'
+MODEL_MORTAR = 'melhor_modelo_mortar.pkl'
+
+SCALE_CONCRETE = 'scale_concrete.sav'
+MODEL_CONCRETE = 'melhor_modelo_concrete.pkl'
 
 def MODEL_CONCRETA_MORTAR(edited_df,scale,model):
 
@@ -63,6 +66,57 @@ def MODEL_CONCRETA_MORTAR(edited_df,scale,model):
 
     return results
 
+def MODEL_CONCRETA_CONCRETE(edited_df,scale,model):
+
+    # # Entradas informadas pelo usuário
+    # VAR1 = float(input("Enter the value of cement consumption (kg/m³): "))
+    # VAR2 = float(input("Enter the value of superplasticizer consumption (kg/m³): "))
+    # VAR3 = float(input("Enter the value of coarse aggregate consumption (kg/m³): "))
+    # VAR4 = float(input("Enter the value of fine aggregate consumption (kg/m³): "))
+    # VAR5 = float(input("Enter the value of curing time (days): "))
+    # VAR6 = float(input("Enter the value of water-cement ratio: "))
+    # VAR7 = float(input("Enter the value of filler materials consumption (kg/m³): "))
+    # print("\n \n")
+
+    # # Convertendo os valores em um dataframe Python
+    # DOSAGEM = [[VAR1, VAR2, VAR3, VAR4, VAR5, VAR6, VAR7]]
+    # DOSAGEM = [[222.36, 4.46, 967.08, 870.32, 3, 0.85, 96.67]]
+
+    columns = ["FCK PREDICT"]
+    results = pd.DataFrame(columns=columns)
+
+    with open(model, 'rb') as file:
+                modelo_carregado = pickle.load(file)
+
+    with open(scale, 'rb') as file:
+                ESCALAS = pickle.load(file)
+
+    
+
+    
+    DOSAGEM = [list(edited_df.iloc[0])]
+    print(DOSAGEM)
+
+
+    DF_PREDICAO = pd.DataFrame(
+        DOSAGEM, columns=["c","sp","cag","fag","t","w-c ratio","add"]
+    )
+
+    for COL in DF_PREDICAO:
+        if COL != 'f_ck':
+            DF_PREDICAO[COL] = DF_PREDICAO[COL].apply(lambda x: (x - ESCALAS[COL][0]) / ESCALAS[COL][1])
+    
+    RESULTS =  np.round(modelo_carregado.predict(DF_PREDICAO),2)
+    
+        # Relatório
+        #results = modelo_carregado.predict(DOSAGEM)
+    results.loc[len(results)] = [
+            f"{RESULTS} MPa",
+        ]
+    
+    results.set_index("FCK PREDICT")
+
+    return results
 
 # ----------------------------------------------------------------------------------------------------------------#
 def standard(data):
@@ -92,9 +146,9 @@ st.markdown("<style>" + open("./style.css").read() + "</style>", unsafe_allow_ht
 with st.sidebar:
     tabs = on_hover_tabs(
         #tabName=["Mortar Compressive strenght", "Desirability", "About"],
-        tabName=["Mortar Compressive strenght", "About"],
+        tabName=["Mortar Compressive strenght","Concrete Compressive strenght", "About"],
         #iconName=["dashboard", "money", "economy"],
-        iconName=["dashboard", "economy"],
+        iconName=["dashboard","dashboard","economy"],
         default_choice=0,
     )
 
@@ -247,7 +301,151 @@ if tabs == "Mortar Compressive strenght":
                 # if st.checkbox('Mostrar dados',key= f'check_{key}'):
                 #      st.write(standard(df))
                 with st.spinner("Please wait"):
-                    results = MODEL_CONCRETA_MORTAR(edited_df,SCALE,MODEL)
+                    results = MODEL_CONCRETA_MORTAR(edited_df,SCALE_MORTAR,MODEL_MORTAR)
+                    st.success("Success!")
+                    placeholder.button("Run", disabled=False, key=3)
+                    # st.write(standard(results))
+                    st.markdown(f"fck Predict: {results.iloc[0,0]}")
+
+                    # st.bar_chart(chart_data)
+                    st.markdown(
+                    "Disclaimer: prediction information is not a recommendation to waive laboratory dosage tests. However, AI helps technicians in the area to get an estimate of the mechanical strength of the concrete mixture."
+                     )
+
+if tabs == "Concrete Compressive strenght":
+    
+    st.markdown(
+        "Hello, I am Concreta, the first Brazilian AI built to determine the concrete strength (fck) based on dosage data. I am one of the creations of the GPEE (Research and Studies Group in Civil Engineering) of UFCAT, and I am here to help you, Civil Engineer and engineering student who wants to determine the properties of concrete.")
+    st.header("Inputs")
+    st.markdown(
+        "Please, fill in the table with the mixture parameters. For your consideration, here is an example:"
+    )
+    st.markdown(
+        """                                             
+        • Cement consumption (kg/m³): 222.36\n
+        • Superplasticizer consumption (kg/m³) : 4.46\n 
+        • Coarse aggregate consumption (kg/m³) : 967.08\n 
+        • Fine aggregate consumption (kg/m³) : 870.32\n
+        • Curing time (days) : 3\n
+        • Water-cement ratio : 0.85\n
+        • Filler materials consumption (kg/m³) : 96.67"""
+    )
+    pl = st.radio('\n What is your platform?', ('PC', 'mobile'))
+
+    if pl == 'PC':
+        df = pd.DataFrame(
+            [
+                {   
+                    "Sample": 0.0,
+                    "Cement consumption (kg/m³)": 0.0,
+                },
+            ]
+        ).set_index("Sample")
+
+        df2 = pd.DataFrame(
+            [
+                {
+                    "Sample": 0.0,
+                    "Superplasticizer consumption (kg/m³)": 0.0,
+                },
+            ]
+        ).set_index("Sample")
+
+        df3 = pd.DataFrame(
+            [
+                {
+                    "Sample": 0.0,
+                    "Coarse aggregate consumption (kg/m³)": 0.0,
+                },
+            ]
+        ).set_index("Sample")
+        
+
+        df4 = pd.DataFrame(
+        [
+            {
+                "Sample": 0.0,
+                "Fine aggregate consumption (kg/m³)": 0.0,
+            },
+        ]
+        ).set_index("Sample")
+
+        df5 = pd.DataFrame(
+        [
+            {
+                "Sample": 0.0,
+                "Curing time (days)": 0.0,
+            },
+        ]
+        ).set_index("Sample")
+
+        df6 = pd.DataFrame(
+        [
+            {
+                "Sample": 0.0,
+                "Water-cement ratio": 0.0,
+            },
+        ]
+        ).set_index("Sample")
+
+        df7 = pd.DataFrame(
+        [
+            {
+                "Sample": 0.0,
+                "Filler materials consumption (kg/m³)": 0.0,
+            },
+        ]
+        ).set_index("Sample")
+
+        col1, col2, col3 = st.columns([4,1,1])
+        with col1:
+            edited_df = st.data_editor(df,use_container_width=True)
+            edited_df2 = st.data_editor(df2,use_container_width=True)
+            edited_df3 = st.data_editor(df3,use_container_width=True)
+            edited_df4 = st.data_editor(df4,use_container_width=True)
+            edited_df5 = st.data_editor(df5,use_container_width=True)
+            edited_df6 = st.data_editor(df6,use_container_width=True)
+            edited_df7 = st.data_editor(df7,use_container_width=True)
+
+
+        edited_df = edited_df.join(edited_df2)
+        edited_df = edited_df.join(edited_df3)
+        edited_df = edited_df.join(edited_df4)
+        edited_df = edited_df.join(edited_df5)
+        edited_df = edited_df.join(edited_df6)
+        edited_df = edited_df.join(edited_df7)
+        edited_df = edited_df.reset_index()
+
+        del edited_df['Sample']
+    else: 
+            st.markdown(
+            "\n"
+            )
+
+            edited_df = pd.DataFrame(
+            [
+                {
+                    "Cement consumption (kg/m³)": st.slider('Cement consumption (kg/m³)',38.0,643.0,38.0,0.01),
+                    "Superplasticizer consumption (kg/m³)": st.slider("Superplasticizer consumption (kg/m³)",0.0,32.2,0.0,0.01),
+                    "Coarse aggregate consumption (kg/m³)": st.slider("Coarse aggregate consumption (kg/m³)",723.0,1419.0,723.0,0.01),
+                    "Fine aggregate consumption (kg/m³)": st.slider("Fine aggregate consumption (kg/m³)",175.95,1066.0,175.9,0.01),
+                    "Curing time (days)": st.slider("Curing time (days)",0,365,0,1),
+                    "Water-cement ratio": st.slider("Water-cement ratio",0.2,4.86,0.2,0.01),
+                    "Filler materials consumption (kg/m³)": st.slider("Filler materials consumption (kg/m³)",0.0,594.0,0.0,0.01),
+                },
+            ]
+            )
+    st.header("Results")
+
+    if edited_df is not None:
+        placeholder = st.empty()
+        if placeholder.button("Run", disabled=False, key=1):
+            placeholder.button("Run", disabled=True, key=2)
+            if edited_df is not None:
+                # if st.checkbox('Mostrar dados',key= f'check_{key}'):
+                #      st.write(standard(df))
+                with st.spinner("Please wait"):
+                    results = MODEL_CONCRETA_CONCRETE(edited_df,SCALE_CONCRETE,MODEL_CONCRETE)
                     st.success("Success!")
                     placeholder.button("Run", disabled=False, key=3)
                     # st.write(standard(results))
