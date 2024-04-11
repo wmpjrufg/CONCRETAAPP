@@ -1,5 +1,4 @@
 import streamlit as st
-from sklearn.preprocessing import StandardScaler
 from concrete_predict import *
 from mortar_predict import *
 from home_page import *
