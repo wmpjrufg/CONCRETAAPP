@@ -15,7 +15,9 @@ with open(escala, 'rb') as file:
 
 # Função para a página de previsão de argamassa
 def mortar_predict_page():
-    st.title("Previsão de Argamassa")
+    st.title("Under Construction...")
+    
+"""    st.title("Previsão de Argamassa")
     st.write("Esta é a página de previsão de argamassa.")
     st.write("Insira os dados necessários e clique em 'Prever' para ver a previsão.")
     
@@ -38,4 +40,4 @@ def mortar_predict_page():
             'Adi': [adi],
             'Cura': [cura],
             'w-c': [w_c]
-        }
+        }"""
