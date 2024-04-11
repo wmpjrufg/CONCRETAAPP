@@ -3,8 +3,8 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import pickle as pkl
 
-modelo = 'model.sav'
-escala = 'scale.sav'
+modelo = 'model_concrete.sav'
+escala = 'scale_concrete.sav'
 
 # Carregar o modelo salvo e o scaler
 with open(modelo, 'rb') as file:

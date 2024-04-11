@@ -3,15 +3,15 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import pickle as pkl
 
-modelo = 'model.sav'
-escala = 'scale.sav'
+# modelo = 'model_mortar.sav'
+# escala = 'scale_mortar.sav'
 
-# Carregar o modelo salvo e o scaler
-with open(modelo, 'rb') as file:
-    modelo = pkl.load(file)
+# # Carregar o modelo salvo e o scaler
+# with open(modelo, 'rb') as file:
+#     modelo = pkl.load(file)
 
-with open(escala, 'rb') as file:
-    escala = pkl.load(file)
+# with open(escala, 'rb') as file:
+#     escala = pkl.load(file)
 
 # Função para a página de previsão de argamassa
 def mortar_predict_page():
