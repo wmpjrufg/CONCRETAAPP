@@ -6,10 +6,10 @@ modelo = 'model_concrete.sav'
 escala = 'scale_concrete.sav'
 
 # Carregar o modelo salvo e o scaler
-with open('model_concrete.sav', 'rb') as file:
+with open(modelo, 'rb') as file:
     modelo = pkl.load(file)
 
-with open('model_concrete.sav', 'rb') as file:
+with open(escala, 'rb') as file:
     escala = pkl.load(file)
 
 # Função para a página de previsão de concreto
