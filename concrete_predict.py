@@ -1,4 +1,5 @@
 import streamlit as st
+from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import pickle as pkl
 
