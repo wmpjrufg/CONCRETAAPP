@@ -3,21 +3,19 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import pickle as pkl
 
-# modelo = 'model_mortar.sav'
-# escala = 'scale_mortar.sav'
+modelo = 'model_mortar.sav'
+escala = 'scale_mortar.sav'
 
-# # Carregar o modelo salvo e o scaler
-# with open(modelo, 'rb') as file:
-#     modelo = pkl.load(file)
+# Carregar o modelo salvo e o scaler
+with open(modelo, 'rb') as file:
+    modelo = pkl.load(file)
 
-# with open(escala, 'rb') as file:
-#     escala = pkl.load(file)
+with open(escala, 'rb') as file:
+    escala = pkl.load(file)
 
 # Função para a página de previsão de argamassa
 def mortar_predict_page():
-    st.title("Under Construction...")
-    
-"""    st.title("Previsão de Argamassa")
+    st.title("Previsão de Argamassa")
     st.write("Esta é a página de previsão de argamassa.")
     st.write("Insira os dados necessários e clique em 'Prever' para ver a previsão.")
     
@@ -40,4 +38,16 @@ def mortar_predict_page():
             'Adi': [adi],
             'Cura': [cura],
             'w-c': [w_c]
-        }"""
+        }
+
+        # Normalização dos dados com a escala
+        x_normalizado = pd.DataFrame(data).copy()
+        for coluna in x_normalizado.columns:
+            if coluna != 'Res':
+                escala_mean = escala.loc['mean', coluna]
+                escala_std = escala.loc['std', coluna]
+                x_normalizado[coluna] = (x_normalizado[coluna] - escala_mean) / escala_std
+
+        # Predict do modelo
+        previsao = modelo[0].predict(x_normalizado)
+        st.write(f"Previsão de Res: {previsao[0]}")
