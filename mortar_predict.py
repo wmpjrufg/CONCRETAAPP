@@ -1,5 +1,4 @@
 import streamlit as st
-from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import pickle as pkl
 
@@ -25,10 +24,12 @@ def mortar_predict_page():
     na = st.number_input("Natural sand consumption (kg/m³)")
     ar = st.number_input("Artificial sand consumption (kg/m³)")
     rbmg = st.number_input("RBMG consumption (kg/m³)")
-    adi = st.number_input("Superplasticizer consumption (L/m³)")
+    adi = st.number_input("Superplasticizer consumption (kg/m³)")
+    ag = st.number_input("Water consumption (kg/m³)")
     cura = st.number_input("Curing time (days)")
-    w_c = st.number_input("Water-cement ratio")
+    
     if st.button("Calcular"):
+        # Criar DataFrame com os dados fornecidos
         data = {
             'Ci': [ci],
             'Ca': [ca],
@@ -36,18 +37,24 @@ def mortar_predict_page():
             'AR': [ar],
             'RBMG': [rbmg],
             'Adi': [adi],
-            'Cura': [cura],
-            'w-c': [w_c]
+            'Ag': [ag],
+            'Cura': [cura]
         }
+        df = pd.DataFrame(data)
 
+        # Adicionar coluna 'RCD' como a soma de 'AR' e 'RBMG'
+        df['RCD'] = df['AR'] + df['RBMG']
+
+        # Selecionar as colunas necessárias para predição
+        df_predicao = df[['Ci', 'Ca', 'NA', 'Adi', 'Ag', 'Cura', 'RCD']]
+        
         # Normalização dos dados com a escala
-        x_normalizado = pd.DataFrame(data).copy()
-        for coluna in x_normalizado.columns:
-            if coluna != 'Res':
+        for coluna in df_predicao.columns:
+            if coluna in escala and coluna != 'Res':
                 escala_mean = escala.loc['mean', coluna]
                 escala_std = escala.loc['std', coluna]
-                x_normalizado[coluna] = (x_normalizado[coluna] - escala_mean) / escala_std
+                df_predicao[coluna] = df_predicao[coluna].apply(lambda x: (x - escala_mean) / escala_std)   
 
         # Predict do modelo
-        previsao = modelo[0].predict(x_normalizado)
+        previsao = modelo.predict(df_predicao)
         st.write(f"Previsão de Res: {previsao[0]}")
