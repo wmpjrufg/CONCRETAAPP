@@ -10,7 +10,7 @@ def main():
     if page == "Home":
         home_page()
     elif page == "Concrete Predict":
-        concrete_predict_page(modelo, escala)
+        concrete_predict_page()
     elif page == "Mortar Predict":
         mortar_predict_page()
 

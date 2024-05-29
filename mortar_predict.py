@@ -56,5 +56,5 @@ def mortar_predict_page():
                 df_predicao[coluna] = df_predicao[coluna].apply(lambda x: (x - escala_mean) / escala_std)   
 
         # Predict do modelo
-        previsao = modelo.predict(df_predicao)
+        previsao = modelo[0].predict(df_predicao)
         st.write(f"Previsão de Res: {previsao[0]}")

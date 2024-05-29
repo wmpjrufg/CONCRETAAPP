@@ -13,15 +13,14 @@ with open(modelo, 'rb') as file:
 with open(escala, 'rb') as file:
     escala = pkl.load(file)
 
+print('OIIIII', escala)
+
 # Função para a página de previsão de concreto
-def concrete_predict_page(modelo, escala):
+def concrete_predict_page():
     st.title("Previsão de Concreto")
     st.write("Esta é a página de previsão de concreto.")
     st.write("Insira os dados necessários e clique em 'Prever' para ver a previsão.")
     
-    # Pedir ao usuário os valores de entrada no streamlit
-    st.title("Previsão de f_ck")
-    st.write("Insira os valores de entrada para prever o f_ck")
 
     # Pedir ao usuário os valores de entrada no streamlit
     c = st.number_input("Cemeter consumption (kg/m³)")
@@ -31,7 +30,7 @@ def concrete_predict_page(modelo, escala):
     t = st.number_input("Curring time (days)")
     w_c_ratio = st.number_input("Water-Cement ratio")
     add = st.number_input("Additions (kg/m³)")
-
+    print('OUUUUUUUUUUUUU', escala)
     if st.button("Calcular"):
         data = {
             'c': [c],
@@ -46,10 +45,10 @@ def concrete_predict_page(modelo, escala):
         # Normalização dos dados com a escala
         x_normalizado = pd.DataFrame(data).copy()
         for coluna in x_normalizado.columns:
-            if coluna != 'f_ck':
+            if coluna in escala and coluna != 'f_ck':
                 escala_mean = escala.loc['mean', coluna]
                 escala_std = escala.loc['std', coluna]
-                x_normalizado[coluna] = (x_normalizado[coluna] - escala_mean) / escala_std
+                x_normalizado[coluna] = x_normalizado[coluna].apply(lambda x: (x - escala_mean) / escala_std) 
 
         # Predict do modelo
         previsao = modelo[0].predict(x_normalizado)
