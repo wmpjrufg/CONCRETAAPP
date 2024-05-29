@@ -13,8 +13,6 @@ with open(modelo, 'rb') as file:
 with open(escala, 'rb') as file:
     escala = pkl.load(file)
 
-print('OIIIII', escala)
-
 # Função para a página de previsão de concreto
 def concrete_predict_page():
     st.title("Previsão de Concreto")
@@ -30,7 +28,6 @@ def concrete_predict_page():
     t = st.number_input("Curring time (days)")
     w_c_ratio = st.number_input("Water-Cement ratio")
     add = st.number_input("Additions (kg/m³)")
-    print('OUUUUUUUUUUUUU', escala)
     if st.button("Calcular"):
         data = {
             'c': [c],
