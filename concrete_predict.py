@@ -15,11 +15,9 @@ with open(escala, 'rb') as file:
 
 # Função para a página de previsão de concreto
 def concrete_predict_page():
-    st.title("Previsão de Concreto")
-    st.write("Esta é a página de previsão de concreto.")
-    st.write("Insira os dados necessários e clique em 'Prever' para ver a previsão.")
+    st.title("Concrete Predict")
+    st.write("Insert your dataset and voilà!!!")
     
-
     # Pedir ao usuário os valores de entrada no streamlit
     c = st.number_input("Cemeter consumption (kg/m³)")
     sp = st.number_input("Superplasticizer consumption(kg/m³)")
@@ -27,8 +25,8 @@ def concrete_predict_page():
     fag = st.number_input("Fine aggregate consumption (kg/m³)")
     t = st.number_input("Curring time (days)")
     w_c_ratio = st.number_input("Water-Cement ratio")
-    add = st.number_input("Additions (kg/m³)")
-    if st.button("Calcular"):
+    add = st.number_input("Additions (kg/m³) - blast furnace or fly ash")
+    if st.button("Run"):
         data = {
             'c': [c],
             'sp': [sp],
@@ -49,4 +47,4 @@ def concrete_predict_page():
 
         # Predict do modelo
         previsao = modelo[0].predict(x_normalizado)
-        st.write(f"Previsão de f_ck: {previsao[0]}")
+        st.write(f"fck: {previsao[0]:.4f} MPa")

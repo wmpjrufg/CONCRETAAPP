@@ -2,21 +2,26 @@ import streamlit as st
 
 # Função para a página inicial
 def home_page():
-    st.title("Página Inicial")
+    st.title("Hello, I'm CONCRETA")
     st.write("""
     <p style='font-size: 16px; line-height: 1.6; text-align: justify;'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi.
-        Phasellus vitae libero eu felis feugiat hendrerit. Sed ut turpis eros.
-        Integer ac justo in massa mollis pretium. Vestibulum sit amet dapibus nisl.
-        Nullam consectetur risus vel dolor scelerisque, nec posuere mi volutpat.
-        Fusce sit amet sodales risus. Proin ac risus nec magna scelerisque sodales.
-        Sed auctor, purus id suscipit tempor, est quam scelerisque nisl, a bibendum elit metus eu orci.
+    the first Brazilian AI to be built to determine the concrete strength (fck) based on dosage data. Come and learn a little about my story. 
+    I am one of the creations of the GPEE (Research and Studies Group in Civil Engineering) of UFCAT (Federal University of Catalão) and 
+    I am here to help you who want to determine properties of concrete.<br><br>
+    In side bar select service to use me.
     </p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi.
-        Phasellus vitae libero eu felis feugiat hendrerit. Sed ut turpis eros.
-        Integer ac justo in massa mollis pretium. Vestibulum sit amet dapibus nisl.
-        Nullam consectetur risus vel dolor scelerisque, nec posuere mi volutpat.
-        Fusce sit amet sodales risus. Proin ac risus nec magna scelerisque sodales.
-        Sed auctor, purus id suscipit tempor, est quam scelerisque nisl, a bibendum elit metus eu orci.
     """, unsafe_allow_html=True)
     
+    with open("paper_concrete.pdf", "rb") as pdf_file:
+        PDFbyte = pdf_file.read()
+        
+    st.download_button(label="Download Concrete Paper",
+                       data=PDFbyte,
+                       file_name = f'paper_concrete.pdf')
+    
+    with open("dataset-full_concrete.xlsx", "rb") as exc_file:
+        EXCbyte = exc_file.read()
+    
+    st.download_button(label="Download Concrete Dataset",
+                    data=EXCbyte,
+                    file_name = f'dataset-full_concrete.xlsx')
